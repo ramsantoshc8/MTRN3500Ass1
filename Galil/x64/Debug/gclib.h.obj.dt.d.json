@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "g:\\mtrn3500\\assignment 1\\plc assignment starting code\\plc assignment starting code\\include\\gclib.h",
+        "ProvidedModule": "",
+        "Includes": [
+            "g:\\mtrn3500\\assignment 1\\plc assignment starting code\\plc assignment starting code\\include\\gclib_record.h",
+            "g:\\mtrn3500\\assignment 1\\plc assignment starting code\\plc assignment starting code\\include\\gclib_errors.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
