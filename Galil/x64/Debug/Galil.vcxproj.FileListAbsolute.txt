@@ -1,1 +1,3 @@
 G:\MTRN3500\Assignment 1\PLC Assignment Starting Code\PLC Assignment Starting Code\Galil\x64\Debug\Galil.vcxproj.AssemblyReference.cache
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\Galil\x64\Debug\Galil.vcxproj.AssemblyReference.cache
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\Galil\x64\Debug\Galil.vcxproj.SuggestedBindingRedirects.cache

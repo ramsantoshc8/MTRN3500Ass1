@@ -1,9 +1,4 @@
-﻿  Galil.cpp
-  GalilMain.cpp
-  Generating Code...
-  Galil.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-Embedded_funcs_x64_Debug.lib(Embedded_funcs.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
-Embedded_funcs_x64_Debug.lib(Embedded_funcs.obj) : warning LNK4099: PDB 'Embedded_funcs_x64_Debug.pdb' was not found with 'Embedded_funcs_x64_Debug.lib(Embedded_funcs.obj)' or at 'G:\MTRN3500\Assignment 1\PLC Assignment Starting Code\PLC Assignment Starting Code\executables\Embedded_funcs_x64_Debug.pdb'; linking object as if no debug info
-Embedded_funcs_x64_Debug.lib(pch.obj) : warning LNK4099: PDB 'Embedded_funcs_x64_Debug.pdb' was not found with 'Embedded_funcs_x64_Debug.lib(pch.obj)' or at 'G:\MTRN3500\Assignment 1\PLC Assignment Starting Code\PLC Assignment Starting Code\executables\Embedded_funcs_x64_Debug.pdb'; linking object as if no debug info
-GalilControl_x64_Debug.lib(GalilControl.obj) : warning LNK4099: PDB 'GalilControl_x64_Debug.pdb' was not found with 'GalilControl_x64_Debug.lib(GalilControl.obj)' or at 'G:\MTRN3500\Assignment 1\PLC Assignment Starting Code\PLC Assignment Starting Code\executables\GalilControl_x64_Debug.pdb'; linking object as if no debug info
-  Galil.vcxproj -> G:\MTRN3500\Assignment 1\PLC Assignment Starting Code\PLC Assignment Starting Code\executables\Galil.exe
+﻿  GalilMain.cpp
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\Galil\GalilMain.cpp(7,1): error C2280: 'Galil::Galil(Galil &&)': attempting to reference a deleted function
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\include\Galil.h(41): message : see declaration of 'Galil::Galil'
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\include\Galil.h(41,2): message : 'Galil::Galil(Galil &&)': function was explicitly deleted

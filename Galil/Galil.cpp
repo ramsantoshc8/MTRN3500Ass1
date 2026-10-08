@@ -39,6 +39,7 @@ Galil::Galil(const Galil& other) {
     
     Functions->GOpen("192.168.0.120 -d", &g);
     constructed = false;
+    std::cout << "COPY CONSTRUCTOR" << std::endl;
     
 }
 
@@ -96,7 +97,7 @@ uint16_t Galil::DigitalInput() {
         inpData = inpData | currBitMask;
     }  
 
-    //std::cout << std::bitset<16>(inpData) << std::endl;
+    std::cout << std::bitset<16>(inpData) << std::endl;
     return inpData;
 }
 
@@ -110,7 +111,7 @@ uint8_t Galil::DigitalByteInput(bool bank) {
         inpData = allBits >> 8;
     }
 
-    //std::cout << std::bitset<8>(inpData) << std::endl;
+    std::cout << std::bitset<8>(inpData) << std::endl;
     return inpData;
 }
 

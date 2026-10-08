@@ -6,8 +6,11 @@ EmbeddedFunctions::EmbeddedFunctions() {
 }
 
 EmbeddedFunctions::~EmbeddedFunctions() {
-	try { GClose(); }
-	catch (Exception^) {}
+	try { 
+		GClose(); 
+	}
+	catch (Exception^) {
+	}
 }
 
 void EmbeddedFunctions::GOpen(String^ address, const int port) {
@@ -54,19 +57,38 @@ void EmbeddedFunctions::GClose() {
 
 String^ EmbeddedFunctions::GCommand(String^ command) { 
 	if (GalilStream == nullptr) {
-		throw gcnew Exception("No exisiting stream");
+		throw gcnew Exception("No exisiting stream --> from func");
+
 	}
 
-	if (!command->EndsWith(";")) {
-		command += ";";
+	if (GalilHndl == nullptr) {
+		throw gcnew Exception("No Galil Handle existant");
 	}
-	SendData = Encoding::ASCII->GetBytes(command);
-	GalilStream->Write(SendData, 0, SendData->Length);
-	Threading::Thread::Sleep(10);
 
-	GalilStream->Read(RecvData, 0, RecvData->Length);
-	Threading::Thread::Sleep(25);
-	Response = Encoding::ASCII->GetString(RecvData);
+	try {
+		if (!command->EndsWith(";")) {
+			command += ";";
+		}
+		SendData = Encoding::ASCII->GetBytes(command);
+		GalilStream->Write(SendData, 0, SendData->Length);
+		Threading::Thread::Sleep(10);
+
+		GalilStream->Read(RecvData, 0, RecvData->Length);
+		Threading::Thread::Sleep(25);
+		Response = Encoding::ASCII->GetString(RecvData);
+
+		if (Response == "?") {
+			throw gcnew Exception("Not a valid command");
+		}
+		else {
+			Console::WriteLine("Response field" + Response);
+		}		
+		
+	} 
+	catch (Exception^ e) {
+		Console::WriteLine("Error -- from func" + e->Message);
+	}
+	
 	return Response;
 }
 

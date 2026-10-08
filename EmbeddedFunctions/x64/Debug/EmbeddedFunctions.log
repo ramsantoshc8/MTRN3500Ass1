@@ -1,3 +1,5 @@
-﻿  EFMain.cpp
-  EmbeddedFunctions.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-  EmbeddedFunctions.vcxproj -> G:\MTRN3500\Assignment 1\PLC Assignment Starting Code\PLC Assignment Starting Code\x64\Debug\EmbeddedFunctions.exe
+﻿  EmbeddedFunctions.cpp
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\EmbeddedFunctions\EmbeddedFunctions.cpp(80,6): error C2664: 'bool System::String::Contains(System::String ^)': cannot convert argument 1 from 'char' to 'System::String ^'
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\EmbeddedFunctions\EmbeddedFunctions.cpp(80,6): message : No user-defined-conversion operator available, or
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\EmbeddedFunctions\EmbeddedFunctions.cpp(80,26): message : No standard conversion exists from the boxed form of the arithmetic type to the target type
+C:\Users\z5482413\Desktop\MTRN3500Ass1-main\MTRN3500Ass1-main\EmbeddedFunctions\EmbeddedFunctions.cpp(80): message : see declaration of 'System::String::Contains'

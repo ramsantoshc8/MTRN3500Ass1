@@ -1,17 +1,206 @@
+
 #include "EmbeddedFunctions.h"
 
 int main(void) {
 	EmbeddedFunctions^ a = gcnew EmbeddedFunctions();
 	Console::WriteLine("Constructed");
 
-	a->GCommand("SB 2");
+	a->GOpen("192.168.0.120", 23);
+	a->GCommand("OP 255, 255");
+	Threading::Thread::Sleep(1000);
+	a->GCommand("CB 2;");
+	Threading::Thread::Sleep(1000);
+	a->GCommand("OP 0,0;");
 
-	a->GClose();
-	Console::WriteLine("GClose done");
+	a->GCommand("XX");
+	Threading::Thread::Sleep(1000);
 
-	delete a;
-	Console::WriteLine("Destructed");
+	try {
 
+		String^ msg = "XX";
+		String^ reply = a->GCommand(msg);
+		Console::WriteLine("passed the test");
+
+	}
+	catch (Exception^ e) {
+		Console::WriteLine("failed");
+	}
+	
+
+	Threading::Thread::Sleep(3000);
+
+	return 0;
+}
+
+
+
+/*
+
+#include "EmbeddedFunctions.h"
+
+// Sends one command and prints what came back
+void Send(EmbeddedFunctions^ galil, String^ cmd) {
+	try {
+		String^ reply = galil->GCommand(cmd);
+		Console::WriteLine("[" + cmd + "]  ->  " + reply->Trim(gcnew array<wchar_t>{ '\0', '\r', '\n', ' ' }));
+	}
+	catch (Exception^ e) {
+		Console::WriteLine("[" + cmd + "]  ->  ERROR: " + e->Message);
+	}
+	Threading::Thread::Sleep(500);   // time to see LEDs change
+}
+
+int main(void) {
+	String^ address = "192.168.0.120 -d";   // change to your rig's IP
+	int port = 23;
+
+	// ================= SECTION 1: error handling (no Galil needed) =================
+	Console::WriteLine("===== SECTION 1: Error handling =====");
+
+	EmbeddedFunctions^ test = gcnew EmbeddedFunctions();
+
+	Console::WriteLine("-- GClose with nothing open (x2), expect no crash");
+	test->GClose();
+	test->GClose();
+	Console::WriteLine("   passed");
+
+	Console::WriteLine("-- GCommand with nothing open, expect ERROR");
+	Send(test, "MG 1");
+	
+	Console::WriteLine("-- GOpen to a bad address, expect GOpen failed");
+	try {
+		test->GOpen("10.255.255.1 -d", port);
+	}
+	catch (Exception^ e) {
+		Console::WriteLine("   caught: " + e->Message);
+	}
+
+	delete test;
+	Console::WriteLine("-- delete after failed open, expect no crash");
+	Console::WriteLine("   passed");
+
+	Console::WriteLine("\n===== SECTION 2: Commands =====");
+
+	EmbeddedFunctions^ galil = gcnew EmbeddedFunctions();
+	try {
+		galil->GOpen(address, port);          // also tests the " -d" strip
+	}
+	catch (Exception^ e) {
+		Console::WriteLine("Could not connect: " + e->Message);
+		Console::ReadKey();
+		return 0;
+	}
+
+	Console::WriteLine("-- Single bits (watch LED 2), expect :");
+	Send(galil, "SB 2");
+	Send(galil, "CB 2");
+
+	Console::WriteLine("-- Semicolon handling, both should give :");
+	Send(galil, "SB 0;");                     // already has ;
+	Send(galil, "CB 0");                      // ; gets added
+
+	Console::WriteLine("-- Whole outputs (low 8, high 8, all, off)");
+	Send(galil, "OP 255,0");
+	Send(galil, "OP 0,255");
+	Send(galil, "OP 255,255");
+	Send(galil, "OP 0,0");
+
+	Console::WriteLine("-- Walking LED 0 to 7");
+	for (int i = 0; i < 8; i++) {
+		Send(galil, "SB " + i);
+		Send(galil, "CB " + i);
+	}
+
+	Console::WriteLine("-- Read outputs back, expect 1 then 0");
+	Send(galil, "SB 5");
+	Send(galil, "MG @OUT[5]");
+	Send(galil, "CB 5");
+	Send(galil, "MG @OUT[5]");
+
+	Console::WriteLine("-- Digital inputs (flip switches and rerun)");
+	Send(galil, "MG @IN[0]");
+	Send(galil, "MG @IN[1]");
+	Send(galil, "MG _TI0");                   // all inputs bank 0 (may not exist on RIO)
+
+	Console::WriteLine("-- Analogue");
+	Send(galil, "AQ 0,2");                    // ±10 V range
+	Send(galil, "MG @AN[0]");
+	Send(galil, "AO 0,2.50");
+	Send(galil, "MG @AN[0]");                 // if AO0 is looped to AI0, expect ~2.5
+	Send(galil, "AO 0,0");
+
+	Console::WriteLine("-- Encoder");
+	Send(galil, "WE 0,0");
+	Send(galil, "QE 0");
+
+	Console::WriteLine("-- Info / misc");
+	Send(galil, "MG 123");                    // expect 123.0000
+	Send(galil, "MG \"hello\"");              // expect hello
+	Send(galil, "MG TIME");                   // controller clock
+
+	Console::WriteLine("-- Bad commands, expect ?");
+	Send(galil, "XX");
+	Send(galil, "SB 999");
+
+	Console::WriteLine("-- Several in a row (stale buffer check)");
+	Send(galil, "MG 123456");                 // long reply
+	Send(galil, "SB 1");                      // short reply, watch for leftover junk
+	Send(galil, "CB 1");
+
+	Console::WriteLine("-- GOpen twice (should close old one first)");
+	try {
+		galil->GOpen(address, port);
+		Send(galil, "MG 1");
+	}
+	catch (Exception^ e) {
+		Console::WriteLine("   caught: " + e->Message);
+	}
+
+	Console::WriteLine("-- GClose then GCommand, expect ERROR");
+	galil->GClose();
+	Send(galil, "MG 1");
+	
 	Console::ReadKey();
 	return 0;
 }
+
+*/
+
+
+
+/*
+
+
+
+
+// ================= SECTION 2: real commands (Galil needed) =================
+
+
+	
+
+
+
+
+	// ================= SECTION 3: interactive (like the tutor) =================
+	Console::WriteLine("\n===== SECTION 3: Interactive (q to quit) =====");
+	try {
+		galil->GOpen(address, port);
+		while (true) {
+			Console::Write("> ");
+			String^ cmd = Console::ReadLine();
+			if (cmd == "q") {
+				break;
+			}
+			Send(galil, cmd);
+		}
+	}
+	catch (Exception^ e) {
+		Console::WriteLine("Could not reconnect: " + e->Message);
+	}
+
+	galil->GClose();
+	delete galil;
+	Console::WriteLine("Done");
+
+
+*/
