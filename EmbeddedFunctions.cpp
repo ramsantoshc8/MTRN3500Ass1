@@ -35,7 +35,7 @@ void EmbeddedFunctions::GOpen(String^ address, const int port) {
 		Console::WriteLine("Connected to " + IPAddress);
 	}
 	catch (Exception^ e) {
-		Console::WriteLine("GOpen failed: " + e->Message);
+		Console::WriteLine("GOPEN failed: " + e->Message);
 		GalilHndl = nullptr;
 		GalilStream = nullptr;
 		throw;
@@ -65,28 +65,28 @@ String^ EmbeddedFunctions::GCommand(String^ command) {
 
 	}
 
+	if (!command->EndsWith(";")) {
+		command += ";";
+	}
+
 	try {
-		if (!command->EndsWith(";")) {
-			command += ";";
-		}
+		
 		SendData = Encoding::ASCII->GetBytes(command);
 		GalilStream->Write(SendData, 0, SendData->Length);
 		Threading::Thread::Sleep(10);
 
-		GalilStream->Read(RecvData, 0, RecvData->Length);
+		int bytesRead = GalilStream->Read(RecvData, 0, RecvData->Length);
 		Threading::Thread::Sleep(25);
-		Response = Encoding::ASCII->GetString(RecvData);
-
-		if (Response == "?") {
-			throw gcnew Exception("Not a valid command");
-		}
-		else {
-			Console::WriteLine("Response field" + Response);
-		}		
-		
+		Response = Encoding::ASCII->GetString(RecvData, 0, bytesRead);		
 	} 
 	catch (Exception^ e) {
-		Console::WriteLine("Error -- from func" + e->Message);
+		Console::WriteLine("GCOMMAND failed" + e->Message);
+	}
+	if (Response->StartsWith("?")) {
+		throw gcnew Exception("For GCOMMAND not a valid command");
+	}
+	else {
+		Console::WriteLine("(SUCCESS) Response field" + Response);
 	}
 	
 	return Response;

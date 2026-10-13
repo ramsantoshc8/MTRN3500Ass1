@@ -14,8 +14,7 @@ Galil::Galil() {
     ReadBuffer[0] = '\0';
     bytesRead = 0;
 
-    int val = Functions->GOpen(DEFAULT_ADDRESS, &g);
-    //std::cout << "CONSTRUCTOR A, value: " << val <<std::endl;
+    Functions->GOpen(DEFAULT_ADDRESS, &g);
 }
 
 Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
@@ -30,8 +29,7 @@ Galil::Galil(EmbeddedFunctions* Funcs, GCStringIn address) {
     ReadBuffer[0] = '\0';
     bytesRead = 0;
 
-    int val = Functions->GOpen(address, &g);
-    //std::cout << "CONSTRUCTOR B, value: " << val << std::endl;
+    Functions->GOpen(address, &g);
 }
 
 Galil::Galil(const Galil& other) {
@@ -46,9 +44,7 @@ Galil::Galil(const Galil& other) {
     ReadBuffer[0] = '\0';
     bytesRead = 0;
     
-    Functions->GOpen(DEFAULT_ADDRESS, &g);
-    //std::cout << "COPY CONSTRUCTOR" << std::endl;
-    
+    Functions->GOpen(DEFAULT_ADDRESS, &g);    
 }
 
 Galil::~Galil() {
@@ -69,8 +65,6 @@ void Galil::DigitalOutput(uint16_t value) {
     std::string lowBytesStr = std::to_string(lowBytes);
 
     std::string msg = "OP " + lowBytesStr + "," + highBytesStr + ";";
-    std::cout << msg << std::endl;
-
     SendCommand(msg);
 }
 
@@ -81,7 +75,6 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
     } else {
         msg += std::to_string(value) + ";";
     }
-    std::cout << msg << std::endl;
     SendCommand(msg);
 }
 
@@ -92,7 +85,6 @@ void Galil::DigitalBitOutput(bool val, uint8_t bit) {
     } else {
         msg += "CB " + std::to_string(bit) + ";";
     }
-
     SendCommand(msg);
 }
 
@@ -104,8 +96,6 @@ uint16_t Galil::DigitalInput() {
         currBitMask = (currBitMask << i);
         inpData = inpData | currBitMask;
     }  
-
-    //std::cout << std::bitset<16>(inpData) << std::endl;
     return inpData;
 }
 
@@ -118,8 +108,6 @@ uint8_t Galil::DigitalByteInput(bool bank) {
     } else { //high
         inpData = allBits >> 8;
     }
-
-    //std::cout << std::bitset<8>(inpData) << std::endl;
     return inpData;
 }
 
@@ -237,7 +225,6 @@ Galil& Galil::operator=(const Galil & other) {
     this->ControlParameters[2] = other.ControlParameters[2];   // Kd
 
     Functions->GOpen(DEFAULT_ADDRESS, &this->g);
-
     return *this;
 }
 
